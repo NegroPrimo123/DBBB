@@ -1,0 +1,46 @@
+/*
+Создано: 07.02.2025
+Изменено: 07.02.2025
+Модель: Нормализованная модель
+База данных: MySQL
+*/
+
+-- Таблица Клиент
+CREATE TABLE Клиент (
+    ID_объекта INT NOT NULL PRIMARY KEY,
+    Имя_клиента VARCHAR(100) NOT NULL,
+    Адрес VARCHAR(255) NOT NULL
+);
+
+-- Таблица Владелец
+CREATE TABLE Владелец (
+    ID_владельца INT NOT NULL PRIMARY KEY,
+    Имя_владельца VARCHAR(100) NOT NULL
+);
+
+-- Таблица Арендатор
+CREATE TABLE Арендатор (
+    ID_арендатора INT NOT NULL PRIMARY KEY,
+    Имя_арендатора VARCHAR(100) NOT NULL
+);
+
+-- Таблица Договор_Аренды
+CREATE TABLE Договор_Аренды (
+    ID_договора INT NOT NULL PRIMARY KEY,
+    ID_арендатора INT NOT NULL,
+    ID_объекта INT NOT NULL,
+    Сумма_аренды DECIMAL(10, 2) NOT NULL,
+    Дата_начала DATE NOT NULL,
+    Дата_окончания DATE NOT NULL,
+    FOREIGN KEY (ID_арендатора) REFERENCES Арендатор(ID_арендатора) ON UPDATE NO ACTION ON DELETE NO ACTION,
+    FOREIGN KEY (ID_объекта) REFERENCES Клиент(ID_объекта) ON UPDATE NO ACTION ON DELETE NO ACTION
+);
+
+-- Таблица Владелец_Клиент (для связи между владельцами и клиентами)
+CREATE TABLE Владелец_Клиент (
+    ID_владельца INT NOT NULL,
+    ID_объекта INT NOT NULL,
+    PRIMARY KEY (ID_владельца, ID_объекта),
+    FOREIGN KEY (ID_владельца) REFERENCES Владелец(ID_владельца) ON UPDATE NO ACTION ON DELETE CASCADE,
+    FOREIGN KEY (ID_объекта) REFERENCES Клиент(ID_объекта) ON UPDATE NO ACTION ON DELETE CASCADE
+);
